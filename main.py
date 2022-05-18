@@ -1,4 +1,4 @@
-import user_handler, random, discord, asyncio, log_handler, encryption
+import user_handler, random, discord, log_handler, encryption
 from PIL import Image, ImageColor
 import lorem as lorem_ipsum
 from discord.ext import commands
