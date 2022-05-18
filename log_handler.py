@@ -1,5 +1,5 @@
 import file_handler, datetime
-file = file_handler("log.json")
+file = file_handler.FileHandler("log.json")
 
 def log(user, message):
     log_data = file.load_data()
