@@ -291,6 +291,8 @@ async def help(ctx):
     embed.add_field(name = "!ping", value = "Sends your ping", inline = True)
     embed.add_field(name = "!help", value = "Sends this message", inline = True)
     embed.add_field(name = "!gamble", value = "Sends a gamble", inline = True)
+    embed.add_field(name = "!rick", value = "Sends a rick roll", inline = True)
+    embed.add_field(name = "!work", value = "Sends a work", inline = True)
 
     await ctx.send(embed = embed)
 
