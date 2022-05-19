@@ -50,3 +50,8 @@ def write_data(user, data):
     user_data = get_user_data(user)
     user_data["data"] = data
     save_user(user, user_data)
+
+def set_bal(user, bal):
+    user_data = get_user_data(user)
+    user_data["bal"] = bal
+    save_user(user, user_data)

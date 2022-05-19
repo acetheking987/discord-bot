@@ -97,4 +97,55 @@ async def ping(ctx):
     embed.add_field(name = "pong", value = str(round(client.latency * 1000)) + "ms", inline = True)
     await ctx.send(embed = embed)
 
+@client.command()
+async def gamble(ctx, amount = 0):
+    log_handler.log(ctx.author.name, f"Gamble  |  {amount}")
+    user_handler.add_exp(str(ctx.author.id), 10)
+
+    if amount == 0:
+        embed = discord.Embed(title = "Gamble", colour = discord.Colour.blurple())
+        embed.add_field(name = "Gamble", value = "You must enter an amount to gamble", inline = True)
+        await ctx.send(embed = embed)
+    elif amount > user_handler.get_bal(str(ctx.author.id)):
+        embed = discord.Embed(title = "Gamble", colour = discord.Colour.blurple())
+        embed.add_field(name = "Gamble", value = "You do not have enough money to gamble", inline = True)
+        await ctx.send(embed = embed)
+    else:
+        multiplyer = random.randint(-20, 10)
+        if multiplyer == 0:
+            multiplyer = 1
+        elif multiplyer < 0:
+            multiplyer = -1
+
+        bal = user_handler.get_bal(str(ctx.author.id))
+        user_handler.set_bal(str(ctx.author.id), (bal - amount) + (amount * multiplyer))    
+        embed = discord.Embed(title = "Gamble", colour = discord.Colour.blurple())
+        embed.add_field(name = "Gamble", value = "You have gambled " + str(amount) + " coins", inline = True)
+        embed.add_field(name = "Multiplyer", value = str(multiplyer), inline = True)
+        if multiplyer < 0:
+            embed.add_field(name = "Result", value = "You lost " + str(amount * multiplyer) + " coins", inline = True)
+        else:
+            embed.add_field(name = "Result", value = "You won " + str(amount * multiplyer) + " coins", inline = True)
+        await ctx.send(embed = embed)
+
+    log_handler.log(ctx.author.name, "Gamble")
+    user_handler.add_exp(str(ctx.author.id), 10)
+
+@client.command()
+async def help(ctx):
+    log_handler.log(ctx.author.name, "Help")
+    user_handler.add_exp(str(ctx.author.id), 10)
+
+    embed = discord.Embed(title = "help", colour = discord.Colour.blurple())
+    embed.add_field(name = "!hello", value = "Sends a hello message", inline = True)
+    embed.add_field(name = "!lorem", value = "Sends a lorem ipsum paragraph", inline = True)
+    embed.add_field(name = "!bal", value = "Sends your balance", inline = True)
+    embed.add_field(name = "!embed", value = "Sends an embed", inline = True)
+    embed.add_field(name = "!dice", value = "Sends a dice roll", inline = True)
+    embed.add_field(name = "!rate", value = "Sends a rate", inline = True)
+    embed.add_field(name = "!colour", value = "Sends a random colour", inline = True)
+    embed.add_field(name = "!ping", value = "Sends your ping", inline = True)
+    embed.add_field(name = "!help", value = "Sends this message", inline = True)
+    await ctx.send(embed = embed)
+
 client.run(encryption.decrypt(open("token.txt", "rb").read().decode("utf-8"), token_password))
